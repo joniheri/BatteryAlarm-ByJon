@@ -1,3 +1,6 @@
+using BatteryAlarm_ByJon.Models;
+using BatteryAlarm_ByJon.Services;
+
 namespace BatteryAlarm_ByJon
 {
     internal static class Program
@@ -8,10 +11,27 @@ namespace BatteryAlarm_ByJon
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+
+            BatteryService batteryService = new BatteryService();
+
+            NotificationService notificationService = new NotificationService();
+
+            BatterySettings batterySettings = new BatterySettings();
+
+            StartupService startupService = new StartupService();
+
+            SettingsService settingsService = new SettingsService();
+
+            Application.Run(
+                new MainForm(
+                    batteryService,
+                    notificationService,
+                    batterySettings,
+                    startupService,
+                    settingsService
+                )
+            );
         }
     }
 }
