@@ -1,32 +1,50 @@
 using System.Drawing;
 
+using BatteryAlarm_ByJon.Models;
+using BatteryAlarm_ByJon.Services;
+using BatteryAlarm_ByJon.Forms;
+
 namespace BatteryAlarm_ByJon
 {
     public partial class MainForm : Form
     {
-        private int lowBatteryThreshold = 20;
-        private int fullBatteryThreshold = 80;
 
-
-        private bool notificationVisible = false;
-        private bool notificationStopped = false;
         private bool previousChargingState = false;
 
-        private DateTime snoozeUntil = DateTime.MinValue;
+        private readonly BatteryService batteryService;
 
-        private NotificationForm? activeNotificationForm;
+        private readonly NotificationService notificationService;
+
+        private readonly BatterySettings batterySettings;
 
         public MainForm()
         {
+
             InitializeComponent();
+
+            batteryService = new BatteryService();
+
+            notificationService = new NotificationService();
+
+            batterySettings = new BatterySettings();
 
             notifyBattery.Icon = SystemIcons.Information;
 
             btnSaveSettings.Enabled = false;
 
+            InitializeSettings();
+
             LoadBatteryInformation();
 
             batteryTimer.Start();
+
+        }
+
+        private void InitializeSettings()
+        {
+            numLowBattery.Value = batterySettings.LowBatteryThreshold;
+
+            numFullBattery.Value = batterySettings.FullBatteryThreshold;
         }
 
         private void LoadBatteryInformation()
@@ -63,18 +81,16 @@ namespace BatteryAlarm_ByJon
 
         private void HandleChargingStateChange(bool isCharging)
         {
-            // Charger baru saja dicolok
+            // Charger baru dicolok
             if (!previousChargingState && isCharging)
             {
-                notificationStopped = false;
-
-                snoozeUntil = DateTime.MinValue;
+                notificationService.ResetNotification();
             }
 
             // Charger dicabut
             if (previousChargingState && !isCharging)
             {
-                activeNotificationForm?.Close();
+                notificationService.CloseNotification();
             }
 
             previousChargingState = isCharging;
@@ -82,19 +98,13 @@ namespace BatteryAlarm_ByJon
 
         private void CheckBatteryNotification(int batteryPercent)
         {
-            if (notificationStopped)
-                return;
-
-            if (notificationVisible)
-                return;
-
-            if (DateTime.Now < snoozeUntil)
+            if (!notificationService.CanShowNotification())
                 return;
 
             // Battery Low
-            if (batteryPercent <= lowBatteryThreshold)
+            if (batteryPercent <= batterySettings.LowBatteryThreshold)
             {
-                ShowCustomNotification(
+                notificationService.ShowNotification(
                     "Battery Low",
                     $"Battery is at {batteryPercent}%",
                     ToolTipIcon.Warning
@@ -104,9 +114,9 @@ namespace BatteryAlarm_ByJon
             }
 
             // Battery Full
-            if (batteryPercent >= fullBatteryThreshold)
+            if (batteryPercent >= batterySettings.FullBatteryThreshold)
             {
-                ShowCustomNotification(
+                notificationService.ShowNotification(
                     "Battery Full",
                     $"Battery is already {batteryPercent}%",
                     ToolTipIcon.Info
@@ -116,43 +126,9 @@ namespace BatteryAlarm_ByJon
             }
         }
 
-        private void ShowCustomNotification(string title, string message, ToolTipIcon iconType)
-        {
-            notificationVisible = true;
-
-            NotificationForm form = new NotificationForm(
-                title,
-                message,
-                iconType
-            );
-
-            activeNotificationForm = form;
-
-            form.FormClosed += (s, e) =>
-            {
-                notificationVisible = false;
-
-                // Klik Stop
-                if (form.IsStopped)
-                {
-                    notificationStopped = true;
-                    return;
-                }
-
-                // Klik Jeda atau X
-                snoozeUntil = DateTime.Now.AddMinutes(1);
-            };
-
-            form.Show();
-
-        }
-
         private void CheckSettingsChanged()
         {
-            bool isChanged =
-                lowBatteryThreshold != (int)numLowBattery.Value
-                ||
-                fullBatteryThreshold != (int)numFullBattery.Value;
+            bool isChanged = batterySettings.LowBatteryThreshold != (int)numLowBattery.Value || batterySettings.FullBatteryThreshold != (int)numFullBattery.Value;
 
             btnSaveSettings.Enabled = isChanged;
         }
@@ -179,8 +155,8 @@ namespace BatteryAlarm_ByJon
                 return;
             }
 
-            lowBatteryThreshold = lowValue;
-            fullBatteryThreshold = fullValue;
+            batterySettings.LowBatteryThreshold = lowValue;
+            batterySettings.FullBatteryThreshold = fullValue;
             btnSaveSettings.Enabled = false;
 
             MessageBox.Show("Settings saved successfully!", "Battery Alarm", MessageBoxButtons.OK, MessageBoxIcon.Information);

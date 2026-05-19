@@ -1,4 +1,4 @@
-﻿namespace BatteryAlarm_ByJon
+﻿namespace BatteryAlarm_ByJon.Forms
 {
     partial class NotificationForm
     {
@@ -28,42 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            lblMessage = new Label();
-            btnSnooze = new Button();
-            btnStop = new Button();
             picIcon = new PictureBox();
+            btnStop = new Button();
+            btnSnooze = new Button();
+            lblMessage = new Label();
             ((System.ComponentModel.ISupportInitialize)picIcon).BeginInit();
             SuspendLayout();
-            // 
-            // lblMessage
-            // 
-            lblMessage.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblMessage.Location = new Point(53, 12);
-            lblMessage.Name = "lblMessage";
-            lblMessage.Size = new Size(224, 35);
-            lblMessage.TabIndex = 0;
-            lblMessage.Text = "Battery is already %";
-            lblMessage.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // btnSnooze
-            // 
-            btnSnooze.Location = new Point(12, 59);
-            btnSnooze.Name = "btnSnooze";
-            btnSnooze.Size = new Size(125, 39);
-            btnSnooze.TabIndex = 1;
-            btnSnooze.Text = "Jeda";
-            btnSnooze.UseVisualStyleBackColor = true;
-            btnSnooze.Click += btnSnooze_Click;
-            // 
-            // btnStop
-            // 
-            btnStop.Location = new Point(152, 59);
-            btnStop.Name = "btnStop";
-            btnStop.Size = new Size(125, 39);
-            btnStop.TabIndex = 2;
-            btnStop.Text = "Stop";
-            btnStop.UseVisualStyleBackColor = true;
-            btnStop.Click += btnStop_Click;
             // 
             // picIcon
             // 
@@ -71,21 +41,50 @@
             picIcon.Name = "picIcon";
             picIcon.Size = new Size(35, 35);
             picIcon.SizeMode = PictureBoxSizeMode.StretchImage;
-            picIcon.TabIndex = 3;
+            picIcon.TabIndex = 7;
             picIcon.TabStop = false;
+            // 
+            // btnStop
+            // 
+            btnStop.Location = new Point(152, 59);
+            btnStop.Name = "btnStop";
+            btnStop.Size = new Size(125, 39);
+            btnStop.TabIndex = 6;
+            btnStop.Text = "Stop";
+            btnStop.UseVisualStyleBackColor = true;
+            btnStop.Click += btnStop_Click_1;
+            // 
+            // btnSnooze
+            // 
+            btnSnooze.Location = new Point(12, 59);
+            btnSnooze.Name = "btnSnooze";
+            btnSnooze.Size = new Size(125, 39);
+            btnSnooze.TabIndex = 5;
+            btnSnooze.Text = "Jeda";
+            btnSnooze.UseVisualStyleBackColor = true;
+            btnSnooze.Click += btnSnooze_Click_1;
+            // 
+            // lblMessage
+            // 
+            lblMessage.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblMessage.Location = new Point(53, 12);
+            lblMessage.Name = "lblMessage";
+            lblMessage.Size = new Size(224, 35);
+            lblMessage.TabIndex = 4;
+            lblMessage.Text = "Battery is already %";
+            lblMessage.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // NotificationForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(289, 111);
+            ClientSize = new Size(307, 117);
             Controls.Add(picIcon);
             Controls.Add(btnStop);
             Controls.Add(btnSnooze);
             Controls.Add(lblMessage);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "NotificationForm";
-            ShowInTaskbar = false;
             StartPosition = FormStartPosition.Manual;
             Text = "Battery Alarm";
             TopMost = true;
@@ -95,9 +94,9 @@
 
         #endregion
 
-        private Label lblMessage;
-        private Button btnSnooze;
-        private Button btnStop;
         private PictureBox picIcon;
+        private Button btnStop;
+        private Button btnSnooze;
+        private Label lblMessage;
     }
 }

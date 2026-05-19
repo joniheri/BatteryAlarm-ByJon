@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace BatteryAlarm_ByJon
+namespace BatteryAlarm_ByJon.Forms
 {
     public partial class NotificationForm : Form
     {
@@ -25,20 +25,19 @@ namespace BatteryAlarm_ByJon
             SetNotificationIcon(iconType);
 
             PositionForm();
-
         }
 
         private void PositionForm()
         {
-            Rectangle workingArea = Screen.PrimaryScreen?.WorkingArea ?? Screen.AllScreens[0].WorkingArea;
+            Screen currentScreen = Screen.PrimaryScreen ?? Screen.AllScreens[0];
 
-            this.Location = new Point(
-                workingArea.Width - this.Width - 10,
-                workingArea.Height - this.Height - 10
-            );
+            Rectangle workingArea = currentScreen.WorkingArea;
+
+            this.Location = new Point(workingArea.Width - this.Width - 10, workingArea.Height - this.Height - 10);
         }
 
-        private void SetNotificationIcon(ToolTipIcon iconType)
+        private void SetNotificationIcon(
+            ToolTipIcon iconType)
         {
             Icon icon;
 
@@ -60,20 +59,6 @@ namespace BatteryAlarm_ByJon
             picIcon.Image = icon.ToBitmap();
         }
 
-        private void btnSnooze_Click(object sender, EventArgs e)
-        {
-            IsSnoozed = true;
-
-            this.Close();
-        }
-
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            IsStopped = true;
-
-            this.Close();
-        }
-
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (!IsStopped)
@@ -83,5 +68,20 @@ namespace BatteryAlarm_ByJon
 
             base.OnFormClosing(e);
         }
+
+        private void btnSnooze_Click_1(object sender, EventArgs e)
+        {
+            IsSnoozed = true;
+
+            Close();
+        }
+
+        private void btnStop_Click_1(object sender, EventArgs e)
+        {
+            IsStopped = true;
+
+            Close();
+        }
+
     }
 }
