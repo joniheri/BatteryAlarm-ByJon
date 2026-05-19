@@ -1,5 +1,5 @@
 using System.Drawing;
-
+using Microsoft.Win32;
 using BatteryAlarm_ByJon.Models;
 using BatteryAlarm_ByJon.Services;
 using BatteryAlarm_ByJon.Forms;
@@ -17,10 +17,20 @@ namespace BatteryAlarm_ByJon
 
         private readonly BatterySettings batterySettings;
 
+        private bool isRealExit = false;
+
         public MainForm()
         {
 
             InitializeComponent();
+
+            chkRunBackground.Checked = Properties.Settings.Default.RunInBackground;
+
+            chkRunStartup.Checked = Properties.Settings.Default.RunAtStartup;
+
+            notifyTray.Icon = SystemIcons.Information;
+
+            notifyTray.Visible = false;
 
             batteryService = new BatteryService();
 
@@ -104,11 +114,7 @@ namespace BatteryAlarm_ByJon
             // Battery Low
             if (batteryPercent <= batterySettings.LowBatteryThreshold)
             {
-                notificationService.ShowNotification(
-                    "Battery Low",
-                    $"Battery is at {batteryPercent}%",
-                    ToolTipIcon.Warning
-                );
+                notificationService.ShowNotification("Battery Low", $"Battery is at {batteryPercent}%", ToolTipIcon.Warning);
 
                 return;
             }
@@ -116,11 +122,7 @@ namespace BatteryAlarm_ByJon
             // Battery Full
             if (batteryPercent >= batterySettings.FullBatteryThreshold)
             {
-                notificationService.ShowNotification(
-                    "Battery Full",
-                    $"Battery is already {batteryPercent}%",
-                    ToolTipIcon.Info
-                );
+                notificationService.ShowNotification("Battery Full", $"Battery is already {batteryPercent}%", ToolTipIcon.Info);
 
                 return;
             }
@@ -131,6 +133,28 @@ namespace BatteryAlarm_ByJon
             bool isChanged = batterySettings.LowBatteryThreshold != (int)numLowBattery.Value || batterySettings.FullBatteryThreshold != (int)numFullBattery.Value;
 
             btnSaveSettings.Enabled = isChanged;
+        }
+
+        private void SetStartup(bool enable)
+        {
+            string appName = "BatteryAlarm";
+
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+
+            if (enable)
+            {
+                key?.SetValue(
+                    appName,
+                    Application.ExecutablePath
+                );
+            }
+            else
+            {
+                key?.DeleteValue(
+                    appName,
+                    false
+                );
+            }
         }
 
         private void batteryTimer_Tick(object sender, EventArgs e)
@@ -145,12 +169,7 @@ namespace BatteryAlarm_ByJon
 
             if (lowValue >= fullValue)
             {
-                MessageBox.Show(
-                    "Low Battery must be smaller than Full Battery!",
-                    "Validation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
+                MessageBox.Show("Low Battery must be smaller than Full Battery!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 return;
             }
@@ -181,6 +200,54 @@ namespace BatteryAlarm_ByJon
         private void numFullBattery_KeyUp(object sender, KeyEventArgs e)
         {
             CheckSettingsChanged();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (chkRunBackground.Checked && !isRealExit)
+            {
+                e.Cancel = true;
+
+                notifyTray.Visible = true;
+
+                this.Hide();
+
+                notifyTray.ShowBalloonTip(3000, "Battery Alarm", "Program running in background", ToolTipIcon.Info);
+            }
+        }
+
+        private void mnuOpen_Click(object sender, EventArgs e)
+        {
+            this.Show();
+
+            this.WindowState = FormWindowState.Normal;
+
+            notifyTray.Visible = false;
+        }
+
+        private void mnuExit_Click(object sender, EventArgs e)
+        {
+            isRealExit = true;
+
+            notifyTray.Visible = false;
+
+            Application.Exit();
+        }
+
+        private void chkRunBackground_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.RunInBackground = chkRunBackground.Checked;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void chkRunStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            SetStartup(chkRunStartup.Checked);
+
+            Properties.Settings.Default.RunAtStartup = chkRunStartup.Checked;
+
+            Properties.Settings.Default.Save();
         }
     }
 }

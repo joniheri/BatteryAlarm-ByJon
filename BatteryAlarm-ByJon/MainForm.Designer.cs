@@ -40,8 +40,15 @@
             numLowBattery = new NumericUpDown();
             numFullBattery = new NumericUpDown();
             btnSaveSettings = new Button();
+            chkRunBackground = new CheckBox();
+            chkRunStartup = new CheckBox();
+            notifyTray = new NotifyIcon(components);
+            contextMenuStrip = new ContextMenuStrip(components);
+            mnuOpen = new ToolStripMenuItem();
+            mnuExit = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)numLowBattery).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numFullBattery).BeginInit();
+            contextMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitle
@@ -113,7 +120,7 @@
             numLowBattery.Name = "numLowBattery";
             numLowBattery.Size = new Size(72, 27);
             numLowBattery.TabIndex = 6;
-            numLowBattery.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            numLowBattery.Value = new decimal(new int[] { 10, 0, 0, 0 });
             numLowBattery.ValueChanged += numLowBattery_ValueChanged;
             numLowBattery.KeyUp += numLowBattery_KeyUp;
             // 
@@ -131,19 +138,70 @@
             // btnSaveSettings
             // 
             btnSaveSettings.Cursor = Cursors.Hand;
-            btnSaveSettings.Location = new Point(231, 176);
+            btnSaveSettings.Location = new Point(12, 240);
             btnSaveSettings.Name = "btnSaveSettings";
-            btnSaveSettings.Size = new Size(179, 58);
+            btnSaveSettings.Size = new Size(400, 58);
             btnSaveSettings.TabIndex = 8;
             btnSaveSettings.Text = "Save Settings";
             btnSaveSettings.UseVisualStyleBackColor = true;
             btnSaveSettings.Click += btnSaveSettings_Click;
             // 
+            // chkRunBackground
+            // 
+            chkRunBackground.AutoSize = true;
+            chkRunBackground.Location = new Point(255, 175);
+            chkRunBackground.Name = "chkRunBackground";
+            chkRunBackground.Size = new Size(155, 24);
+            chkRunBackground.TabIndex = 9;
+            chkRunBackground.Text = "Run in background";
+            chkRunBackground.UseVisualStyleBackColor = true;
+            chkRunBackground.CheckedChanged += chkRunBackground_CheckedChanged;
+            // 
+            // chkRunStartup
+            // 
+            chkRunStartup.AutoSize = true;
+            chkRunStartup.Location = new Point(255, 205);
+            chkRunStartup.Name = "chkRunStartup";
+            chkRunStartup.Size = new Size(123, 24);
+            chkRunStartup.TabIndex = 10;
+            chkRunStartup.Text = "Run at startup";
+            chkRunStartup.UseVisualStyleBackColor = true;
+            chkRunStartup.CheckedChanged += chkRunStartup_CheckedChanged;
+            // 
+            // notifyTray
+            // 
+            notifyTray.ContextMenuStrip = contextMenuStrip;
+            notifyTray.Text = "Battery Alarm";
+            notifyTray.Visible = true;
+            // 
+            // contextMenuStrip
+            // 
+            contextMenuStrip.ImageScalingSize = new Size(20, 20);
+            contextMenuStrip.Items.AddRange(new ToolStripItem[] { mnuOpen, mnuExit });
+            contextMenuStrip.Name = "contextMenuStrip1";
+            contextMenuStrip.Size = new Size(115, 52);
+            // 
+            // mnuOpen
+            // 
+            mnuOpen.Name = "mnuOpen";
+            mnuOpen.Size = new Size(114, 24);
+            mnuOpen.Text = "Open";
+            mnuOpen.Click += mnuOpen_Click;
+            // 
+            // mnuExit
+            // 
+            mnuExit.Name = "mnuExit";
+            mnuExit.Size = new Size(114, 24);
+            mnuExit.Text = "Exit";
+            mnuExit.Click += mnuExit_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(424, 245);
+            ClientSize = new Size(424, 318);
+            Controls.Add(chkRunStartup);
+            Controls.Add(chkRunBackground);
             Controls.Add(btnSaveSettings);
             Controls.Add(numFullBattery);
             Controls.Add(numLowBattery);
@@ -157,8 +215,10 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Battery Alarm";
+            FormClosing += MainForm_FormClosing;
             ((System.ComponentModel.ISupportInitialize)numLowBattery).EndInit();
             ((System.ComponentModel.ISupportInitialize)numFullBattery).EndInit();
+            contextMenuStrip.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -176,5 +236,11 @@
         private NumericUpDown numLowBattery;
         private NumericUpDown numFullBattery;
         private Button btnSaveSettings;
+        private CheckBox chkRunBackground;
+        private CheckBox chkRunStartup;
+        private NotifyIcon notifyTray;
+        private ContextMenuStrip contextMenuStrip;
+        private ToolStripMenuItem mnuOpen;
+        private ToolStripMenuItem mnuExit;
     }
 }
