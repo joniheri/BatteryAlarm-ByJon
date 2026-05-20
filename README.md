@@ -3,6 +3,11 @@
 - Open the source code with Visual Studio 2022 Community Edition or latest.
 - .NET 8.0
 
+## To DO
+
+- Make Grafik history
+- Jika sudah ceklis "Run at Startup" dan laptop di restar, maka program tidak perlu muncul dulu, tapi sudah running di Background!
+
 ## Make a Release on GitHub
 
 ### Step 1 - Create a version tag
