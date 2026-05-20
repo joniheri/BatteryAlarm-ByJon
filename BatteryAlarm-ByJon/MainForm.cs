@@ -149,7 +149,7 @@ namespace BatteryAlarm_ByJon
             LoadBatteryInformation();
         }
 
-        private void notifyTray_DoubleClick(object sender, EventArgs e)
+        private void notifyTray_DoubleClick(object? sender, EventArgs e)
         {
             this.Show();
 
