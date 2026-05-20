@@ -1,74 +1,74 @@
-## System Requirement:
+## System Requirements
 
-- Open sourcecode wiht Visual Studio 2026 or Lates: Community Version
-- .NET 10.0
+- Open the source code with Visual Studio 2022 Community Edition or latest.
+- .NET 8.0
 
-## Make Release at GitHub
+## Make a Release on GitHub
 
-### Step 1 - Make Tag version
+### Step 1 - Create a version tag
 
-in terminal:
+In the terminal:
 
 ```bash
 git tag v1.0.0
 git push origin v1.0.0
 ```
 
-Description
+explanation:
 
-```
+```text
 v1.0.0
 ↑
-ini penanda source code untuk release
+This marks the source code version for the release
 ```
 
-Setelah selesai, GitHub akan tahu bahwa ada versi baru.
+After that, GitHub will recognize that a new version is available.
 
-### Langkah 2 — Buka repository GitHub
+### Step 2 - Open the GitHub repository
 
-Masuk ke repository Anda.
+Open your GitHub repository.
 
-Di bagian kanan biasanya ada:
+On the right side, you will usually see:
 
-```
+```text
 Releases
 No releases published
 ```
 
-click
+Click:
 
-```
+```text
 Releases
-→ Create a new release
+-> Create a new release
 ```
 
-Kalau tidak ada:
+If that option is not shown, go to:
 
-```
+```text
 Code
-→ Releases
-→ Draft a new release
+-> Releases
+-> Draft a new release
 ```
 
-### Langkah 3 — Isi informasi Release
+### Step 3 - Fill in the release information
 
-Isi seperti ini:
+Use the following values:
 
-Tag
+Tag:
 
-```
+```text
 v1.0.0
 ```
 
-Release title
+Release title:
 
-```
+```text
 Battery Alarm v1.0.0
 ```
 
-Description
+Example description:
 
-```
+```text
 Battery Alarm v1.0.0
 
 Features:
@@ -76,50 +76,50 @@ Features:
 - Battery full notification
 - Snooze notification
 - Stop notification
-- Run in background
-- Run at startup
+- Runs in the background
+- Runs at startup
 - System tray support
 - Portable version
 
 Technology:
 - C#
 - WinForms
-- OOP Architecture
+- OOP architecture
 ```
 
-### Langkah 4 — Upload file portable
+### Step 4 - Upload the portable file
 
-Di bawah ada area:
+Below, there is an area like this:
 
-```
+```text
 Attach binaries by dropping them here
 ```
 
-Drag file:
+Drag this file into that area:
 
-```
+```text
 BatteryAlarm-ByJon-v1.0.0-portable.zip
 ```
 
-or click:
+Or click:
 
-```
+```text
 Upload files
 ```
 
-choose:
+Then select:
 
-```
+```text
 your-directory\BatteryAlarm-ByJon-v1.0.0-portable.zip
 ```
 
-Wait upload finish.
+Wait until the upload is complete.
 
 Done.
 
-Hasilnya nanti kira-kira seperti ini:
+The result will look something like this:
 
-```
+```text
 Battery Alarm v1.0.0
 
 Assets
@@ -127,8 +127,8 @@ Assets
 BatteryAlarm-ByJon-v1.0.0-portable.zip
 ```
 
-Dan link download otomatis menjadi:
+The download page link will automatically be:
 
-```
+```text
 https://github.com/USERNAME/BatteryAlarm-ByJon/releases
 ```
